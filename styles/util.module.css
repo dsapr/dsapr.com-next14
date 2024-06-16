@@ -1,0 +1,16 @@
+.plain {
+  font-size: 16px;
+  color: #555555
+}
+
+.stress {
+  font-size: 16px;
+  color: #000000;
+}
+
+.textLink {
+  font-size: 16px;
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-color: #333333;
+}
