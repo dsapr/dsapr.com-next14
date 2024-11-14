@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "colorjs.io": "^0.5.2",
     "lunar-javascript": "^1.6.12",
     "next": "14.2.4",
     "react": "^18",
