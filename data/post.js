@@ -44,11 +44,11 @@ export const getPostBySlug = async (slug) => {
 
 export async function getPost(slug) {
   const posts = await getAllPostsMeta();
-  console.log("slug", slug, "posts", posts);
   if (!slug) throw new Error("not found");
   const post = posts.find((post) => post.title === slug);
   if (!post) {
-    throw new Error("not found");
+    throw new Error(`not found article [${slug}]`);
   }
+  console.log("slug", slug, "posts", posts, "post", post);
   return post;
 }

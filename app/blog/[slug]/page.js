@@ -1,45 +1,53 @@
-import { getAllPostsMeta, getPost } from "@/data/post";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import rehypePrettyCode from "rehype-pretty-code";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
+"use client";
+
+import { getPost } from "@/data/post";
 import { sans } from "@/public/font/fonts";
 import "./markdown.css";
 import { getPostWords, readingTime } from "@/lib/utils";
+import Markdown from "react-markdown";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
-// 生成静态参数（文章列表）
-export async function generateStaticParams() {
-  const metas = await getAllPostsMeta();
-  return metas.map((post) => {
-    return { slug: post.meta.slug };
-  });
-}
+export default function PostPage({ params }) {
+  console.log("aaaa", params.slug);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default async function PostPage({ params }) {
-  console.log(params);
-  const post = await getPost(params.slug);
-  let postComponents = {};
+  useEffect(() => {
+    // 在组件加载时异步获取数据
+    const fetchPost = async () => {
+      try {
+        const title = decodeURIComponent(params.slug);
+        console.log("title2314", title);
+        const postData = await getPost(title);
+        if (postData) {
+          setPost(postData);
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // 动态导入组件
-  try {
-    postComponents = await import(
-      "../../posts/" + params.slug + "/components.js"
-    );
-  } catch (e) {
-    if (!e || e.code !== "MODULE_NOT_FOUND") {
-      throw e;
-    }
-  }
+    fetchPost();
+  }, []);
 
-  const words = getPostWords(post.content);
-  const readTime = readingTime(words);
+  // const words = getPostWords(post.content);
+  // const readTime = readingTime(words);
+  const words = "123";
+  const readTime = 33;
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!post) return <div>Post not found.</div>;
+  console.log("post234", post, "error", error);
   return (
     <Article>
-      <Title>{post.meta.title}</Title>
+      <Title>{post.title}</Title>
       <DateText>
-        {new Date(post.meta.date).toLocaleDateString("cn", {
+        {new Date(post.meta.createDate).toLocaleDateString("en-US", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -51,27 +59,7 @@ export default async function PostPage({ params }) {
       </Stats>
 
       <ContentWrapper className="markdown">
-        <MDXRemote
-          source={post?.content || ""} // MDX 内容
-          // components={{ // 自定义组件，覆盖默认markdown元素
-          //   ...postComponents,
-          // }}
-          options={{
-            parseFrontmatter: true,
-            mdxOptions: {
-              remarkPlugins: [remarkMath],
-              rehypePlugins: [
-                rehypeKatex,
-                [
-                  rehypePrettyCode,
-                  {
-                    theme: "material-theme-palenight",
-                  },
-                ],
-              ],
-            },
-          }}
-        />
+        <Markdown>{post?.content || ""}</Markdown>
       </ContentWrapper>
     </Article>
   );

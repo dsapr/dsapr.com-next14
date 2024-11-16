@@ -5,6 +5,7 @@ import Wrapper from "@/components/layout/Wrapper";
 import styled from "styled-components";
 import { sans } from "@/public/font/fonts"; // 假设你有这个字体文件
 import Color from "colorjs.io";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const Main = styled.main`
@@ -76,29 +77,23 @@ export default function Page({ params }) {
 
   if (loading) return <div>Loading...</div>;
   console.log("111", posts);
-  const posts2 = [
-    { title: "article1", meta: { date: "2024-09-04 12:31" } },
-    { title: "article2", meta: { date: "2024-08-04 12:31" } },
-    { title: "支持数学公式", meta: { date: "2024-07-04 12:31" } },
-    { title: "article3", meta: { date: "2024-06-04 12:31" } },
-    { title: "article4", meta: { date: "2024-05-04 12:31" } },
-    { title: "article5", meta: { date: "2021-07-07 12:31" } },
-  ];
   return (
     <Wrapper>
       <Main>
         {posts.map((item, index) => (
-          <Title key={index}>
-            <PostTitle post={item} />
-            <TitleDate>
-              {new Date(item.meta.createDate).toLocaleDateString("en-US", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })}
-            </TitleDate>
-            <p style={{ marginTop: "0.25rem" }}>"这是一句spoiler"</p>
-          </Title>
+          <Link key={index} href={"/blog/" + item.title + "/"}>
+            <Title key={index}>
+              <PostTitle post={item} />
+              <TitleDate>
+                {new Date(item.meta.createDate).toLocaleDateString("en-US", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}
+              </TitleDate>
+              <p style={{ marginTop: "0.25rem" }}>"这是一句spoiler"</p>
+            </Title>
+          </Link>
         ))}
       </Main>
     </Wrapper>
