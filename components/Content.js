@@ -1,9 +1,10 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 
 import utilStyles from "@/styles/util.module.css";
 import styls from "@/styles/Content.module.css";
+import { useEffect, useState } from "react";
 
 const Box = styled.div`
   width: 100px;
@@ -13,6 +14,20 @@ const Box = styled.div`
 `;
 
 export default function Content() {
+  const [titles, setTitles] = useState([]);
+  useEffect(() => {
+    const fetchMarkdown = async () => {
+      const blogUrl = process.env.NEXT_PUBLIC_BLOG_BASE_URL;
+      const url = `${blogUrl}/blogIndex.md`;
+
+      const res = await fetch(url);
+      const text = await res.text();
+      const titleLines = text.split("\n");
+      setTitles(titleLines);
+    };
+
+    fetchMarkdown();
+  }, []);
   return (
     <>
       <div className={`${styls.content} ${utilStyles.plain}`}>
@@ -29,13 +44,11 @@ export default function Content() {
             >
               Github
             </a>
-            ,<a
-              className={`${styls.external}`}
-              target="_blank"
-              href= 'blog' 
-            >
+            ,
+            <a className={`${styls.external}`} target="_blank" href="blog">
               Blog
-            </a>.
+            </a>
+            .
           </p>
           <p>
             I love <span className={utilStyles.stress}>cats</span>. 🐈
