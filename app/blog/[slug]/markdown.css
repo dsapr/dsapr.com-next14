@@ -5,6 +5,10 @@
   --radius-bottom: 12px;
   --padding-top: 1rem;
   --padding-bottom: 1rem;
+
+  word-break: break-word; /* 强制长单词断行 */
+  white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
+  overflow-wrap: break-word; /* 在长单词或 URL 地址内部进行换行 */
 }
 
 .markdown p {

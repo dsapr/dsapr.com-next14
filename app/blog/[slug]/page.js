@@ -7,6 +7,7 @@ import { getPostWords, readingTime } from "@/lib/utils";
 import Markdown from "react-markdown";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import remarkGfm from "remark-gfm";
 
 export default function PostPage({ params }) {
   console.log("aaaa", params.slug);
@@ -58,7 +59,7 @@ export default function PostPage({ params }) {
         <p>预计阅读时间：{readTime}分钟</p>
       </Stats>
 
-      <ContentWrapper className="markdown">
+      <ContentWrapper className="markdown" remarkPlugins={[remarkGfm]}>
         <Markdown>{post?.content || ""}</Markdown>
       </ContentWrapper>
     </Article>
