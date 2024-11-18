@@ -59,8 +59,8 @@ export default function PostPage({ params }) {
         <p>预计阅读时间：{readTime}分钟</p>
       </Stats>
 
-      <ContentWrapper className="markdown" remarkPlugins={[remarkGfm]}>
-        <Markdown>{post?.content || ""}</Markdown>
+      <ContentWrapper className="markdown">
+        <Markdown remarkPlugins={[remarkGfm]}>{post?.content || ""}</Markdown>
       </ContentWrapper>
     </Article>
   );
@@ -68,7 +68,10 @@ export default function PostPage({ params }) {
 
 // Styled-components
 const Article = styled.article`
-  padding: 20px;
+  /* padding: 20px; */
+  width: 32rem;
+  margin: 0 2rem;
+  max-width: 32rem;
 `;
 
 const Title = styled.h1`
